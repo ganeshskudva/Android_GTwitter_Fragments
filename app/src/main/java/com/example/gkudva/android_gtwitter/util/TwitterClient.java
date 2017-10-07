@@ -111,4 +111,52 @@ public class TwitterClient extends OAuthBaseClient {
 
         getClient().post(apiUrl, params, handler);
     }
+
+    // GET friends/list.json
+    public void getFriendsList(long userId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("friends/list.json");
+        RequestParams params = new RequestParams();
+        params.put("user_id", userId);
+
+        getClient().get(apiUrl, params, handler);
+    }
+
+    // GET followers/list.json
+    public void getFollowersList(long userId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("followers/list.json");
+        RequestParams params = new RequestParams();
+        params.put("user_id", userId);
+
+        getClient().get(apiUrl, params, handler);
+    }
+
+    // HomeTimeline - Gets us the home timeline
+    // GET statuses/mentions_timeline.json
+    public void getMentionsTimeline(long maxId, AsyncHttpResponseHandler handler) {
+    //    Log.d(TAG, "------mentions_timeline = max_id: " + maxId);
+
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", AppConstants.TWEET_FETCH_COUNT);
+        if (maxId != -1) {
+            params.put("max_id", maxId);
+        } else {
+            params.put("since_id", 1);
+        }
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getUserTimeline(long userId, long maxId, AsyncHttpResponseHandler handler) {
+    //    Log.d(TAG, "------user_timeline = userId: " + userId + " maxId: " + maxId);
+
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("user_id", userId);
+        if (maxId != -1) {
+            params.put("max_id", maxId);
+        } else {
+            params.put("since_id", 1);
+        }
+        getClient().get(apiUrl, params, handler);
+    }
 }
