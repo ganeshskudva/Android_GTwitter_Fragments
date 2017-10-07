@@ -3,13 +3,10 @@ package com.example.gkudva.android_gtwitter.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
-
-import java.util.List;
 
 /**
  * Created by gkudva on 28/09/17.
@@ -30,6 +27,21 @@ public class User extends Model implements JSONSerializable {
     @Column(name = "ProfileImageUrl")
     public String profileImageUrl;
 
+    @Column(name = "Description")
+    public String description;
+
+    @Column(name = "FollowersCount")
+    public int followersCount;
+
+    @Column(name = "FollowingCount")
+    public int followingCount;
+
+    @Column(name = "ProfileBannerUrl")
+    public String profileBannerUrl;
+
+    @Column(name = "IsFollowing")
+    public boolean isFollowing;
+
     public User() {
         super();
     }
@@ -39,24 +51,18 @@ public class User extends Model implements JSONSerializable {
         name = jsonObject.getString("name");
         uid = jsonObject.getLong("id");
         screenName = "@" + jsonObject.getString("screen_name");
+        description = jsonObject.getString("description");
+        followersCount = jsonObject.getInt("followers_count");
+        followingCount = jsonObject.getInt("friends_count");
         profileImageUrl = jsonObject.getString("profile_image_url");
-    }
+        isFollowing = jsonObject.getBoolean("following");
 
-    // Save this user to the database
-    public static void saveUser(User user) {
-        user.save();
-    }
-
-    // Get the existing user from the database
-    public static User getExistingUser() {
-        List<User> userList = new Select()
-                .from(User.class).execute();
-
-        if (userList != null && userList.size() > 0) {
-            return userList.get(0);
-        } else {
-            return null;
+        try {
+            profileBannerUrl = jsonObject.getString("profile_banner_url") + "/mobile";
+        } catch(JSONException e) {
+            // don't throw an error
         }
+
     }
 
     @Override
@@ -64,41 +70,12 @@ public class User extends Model implements JSONSerializable {
         StringBuilder str = new StringBuilder();
         str.append("name=").append(name).append(";\n");
         str.append("screenName=").append(screenName).append(";\n");
-        str.append("profileImageUrl=").append(profileImageUrl);
+        str.append("followersCount=").append(followersCount).append(";\n");
+        str.append("followingCount=").append(followingCount).append(";\n");
+        str.append("isFollowing=").append(isFollowing).append(";\n");
+        str.append("profileImageUrl=").append(profileImageUrl).append(";\n");;
+        str.append("profileBannerUrl=").append(profileBannerUrl).append(";\n");;
 
         return str.toString();
-    }
-
-    public void setUid(long uid) {
-        this.uid = uid;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setScreenName(String screenName) {
-        this.screenName = screenName;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public long getUid() {
-
-        return uid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getScreenName() {
-        return screenName;
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
     }
 }
