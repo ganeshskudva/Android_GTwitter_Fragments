@@ -19,6 +19,8 @@ import com.example.gkudva.android_gtwitter.util.DividerItemDecoration;
 import com.example.gkudva.android_gtwitter.util.ItemClickSupport;
 import com.example.gkudva.android_gtwitter.util.TwitterClient;
 import com.example.gkudva.android_gtwitter.view.activities.ProfileActivity;
+import com.example.gkudva.android_gtwitter.view.adapter.UsersAdapter;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.parceler.Parcels;
 

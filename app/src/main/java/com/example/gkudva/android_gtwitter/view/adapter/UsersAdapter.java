@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.gkudva.android_gtwitter.R;
+import com.example.gkudva.android_gtwitter.databinding.ItemUserBinding;
 import com.example.gkudva.android_gtwitter.model.TweetManager;
 import com.example.gkudva.android_gtwitter.model.User;
 

@@ -22,6 +22,7 @@ import com.example.gkudva.android_gtwitter.model.TweetManager;
 import com.example.gkudva.android_gtwitter.model.User;
 import com.example.gkudva.android_gtwitter.util.AppConstants;
 import com.example.gkudva.android_gtwitter.util.NumUtil;
+import com.example.gkudva.android_gtwitter.view.fragment.UserTimelineFragment;
 
 import org.parceler.Parcels;
 

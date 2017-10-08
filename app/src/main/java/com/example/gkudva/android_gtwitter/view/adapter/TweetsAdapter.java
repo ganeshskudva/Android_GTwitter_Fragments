@@ -18,9 +18,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.gkudva.android_gtwitter.R;
+import com.example.gkudva.android_gtwitter.databinding.ItemMediaTweetBinding;
+import com.example.gkudva.android_gtwitter.databinding.ItemTweetBinding;
 import com.example.gkudva.android_gtwitter.model.Media;
 import com.example.gkudva.android_gtwitter.model.Tweet;
 import com.example.gkudva.android_gtwitter.util.AppConstants;
+import com.example.gkudva.android_gtwitter.util.PatternEditableBuilder;
 import com.example.gkudva.android_gtwitter.view.activities.ProfileActivity;
 import com.example.gkudva.android_gtwitter.view.fragment.ComposeDialogFragment;
 

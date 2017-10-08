@@ -29,6 +29,7 @@ import com.example.gkudva.android_gtwitter.util.TwitterClient;
 import com.example.gkudva.android_gtwitter.view.activities.TweetDetailActivity;
 import com.example.gkudva.android_gtwitter.view.adapter.TweetsAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
