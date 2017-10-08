@@ -58,7 +58,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+[x] Had several issues while dealing with Fragment life cycle.
+[x] Tried to add tweet search feature, but couldnt complete in time
 
 ## Open-source libraries used
 
