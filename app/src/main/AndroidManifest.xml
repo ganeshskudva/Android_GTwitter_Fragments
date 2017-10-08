@@ -49,11 +49,40 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.activities.TweetDetailActivity"
+            android:parentActivityName=".view.activities.TimelineActivity"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activities.TimelineActivity"/>
+        </activity>
+        <activity
+            android:name=".view.activities.ProfileActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.activities.TimelineActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activities.TimelineActivity"/>
+        </activity>
+        <activity
+            android:name=".view.activities.UserListActivity"
+            android:parentActivityName=".view.activities.ProfileActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.activities.TimelineActivity"/>
+        </activity>
+        <activity
             android:name=".view.activities.TimelineActivity"
-            android:label="@string/title_activity_timeline" />
-        <activity android:name=".view.activities.TweetDetailActivity" />
-        <activity android:name=".view.activities.ProfileActivity" />
-        <activity android:name=".view.activities.UserListActivity"></activity>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

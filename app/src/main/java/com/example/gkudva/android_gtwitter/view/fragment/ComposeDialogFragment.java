@@ -20,11 +20,12 @@ import com.bumptech.glide.Glide;
 import com.example.gkudva.android_gtwitter.R;
 import com.example.gkudva.android_gtwitter.TwitterApplication;
 import com.example.gkudva.android_gtwitter.model.Tweet;
+import com.example.gkudva.android_gtwitter.model.TweetManager;
 import com.example.gkudva.android_gtwitter.model.User;
 import com.example.gkudva.android_gtwitter.util.AppConstants;
+import com.example.gkudva.android_gtwitter.util.ErrorHandler;
 import com.example.gkudva.android_gtwitter.util.JSONDeserializer;
 import com.example.gkudva.android_gtwitter.util.TwitterClient;
-import com.example.gkudva.android_gtwitter.util.ErrorHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -45,6 +46,8 @@ public class ComposeDialogFragment extends DialogFragment {
 
     @BindView(R.id.btTweet)
     Button btTweet;
+    @BindView(R.id.tvReplyPlaceholder)
+    TextView tvReplyPlaceholder;
     @BindView(R.id.etMessage)
     EditText etMessage;
     @BindView(R.id.tvCharsLeft)
@@ -60,6 +63,7 @@ public class ComposeDialogFragment extends DialogFragment {
 
     private TwitterClient mClient;
     private User mUser;
+    private Tweet mTweet;
     private int charLength;
 
     public interface ComposeDialogListener {
@@ -73,11 +77,12 @@ public class ComposeDialogFragment extends DialogFragment {
         mClient = TwitterApplication.getRestClient();
     }
 
-    public static ComposeDialogFragment newInstance(User user) {
+    public static ComposeDialogFragment newInstance(Tweet tweet) {
         ComposeDialogFragment frag = new ComposeDialogFragment();
         Bundle args = new Bundle();
-        args.putParcelable(AppConstants.USER_EXTRA, Parcels.wrap(user));
+        args.putParcelable(AppConstants.TWEET_EXTRA, Parcels.wrap(tweet));
         frag.setArguments(args);
+
         return frag;
     }
 
@@ -95,7 +100,12 @@ public class ComposeDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         charLength = Integer.parseInt(getActivity().getResources().getString(R.string.tweetLimit));
-        mUser = Parcels.unwrap(getArguments().getParcelable(AppConstants.USER_EXTRA));
+        mTweet = Parcels.unwrap(getArguments().getParcelable(AppConstants.TWEET_EXTRA));
+        if(mTweet != null) {
+            Log.d("COMPOSE_DEBUG", mTweet.toString());
+        }
+
+        mUser = TweetManager.getInstance().getCurrentUser();
         if (mUser != null) {
             initDialog();
         } else {
@@ -142,6 +152,15 @@ public class ComposeDialogFragment extends DialogFragment {
     }
 
     private void initDialog() {
+        if (mTweet != null) {
+            // this is a reply to a tweet
+            tvReplyPlaceholder.setVisibility(View.VISIBLE);
+            tvReplyPlaceholder.setText("In reply to " + mTweet.user.name);
+
+            etMessage.setText(mTweet.user.screenName + " ");
+            etMessage.setSelection(etMessage.length());
+        }
+
         tvName.setText(mUser.name);
         tvScreenName.setText(mUser.screenName);
 
@@ -152,7 +171,9 @@ public class ComposeDialogFragment extends DialogFragment {
 
     @OnClick(R.id.btTweet)
     public void postTweet() {
-        mClient.postStatus(etMessage.getText().toString(), -1, new JsonHttpResponseHandler() {
+        long replyStatusId = (mTweet != null) ? mTweet.id : -1;
+
+        mClient.postStatus(etMessage.getText().toString(), replyStatusId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d(TAG, "Compose tweet successful: " + response.toString());
@@ -188,7 +209,7 @@ public class ComposeDialogFragment extends DialogFragment {
     }
 
     private void sendSuccess(Tweet statusTweet) {
-        ComposeDialogListener listener = (ComposeDialogListener) getActivity();
+        ComposeDialogListener listener = (ComposeDialogListener) getParentFragment();
         if (listener != null) {
             listener.onUpdateStatusSuccess(statusTweet);
         }
@@ -201,3 +222,4 @@ public class ComposeDialogFragment extends DialogFragment {
         dismiss();
     }
 }
+
